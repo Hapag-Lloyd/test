@@ -18,13 +18,13 @@ jobs:
               - '**/*.md'
 
             renovate-config:
-              - '/renovate.json'
-              - '/default.json'
+              - 'renovate.json'
+              - 'default.json'
 
             workflow:
               - '.github/workflow/*'
     outputs:
-      json: steps.changes.outputs.json
+      json: ${{ steps.changes.outputs.json }}
       markdown: steps.changes.outputs.markdown
       renovate-config: steps.changes.outputs.renovate-config
       workflow: steps.changes.outputs.workflow
