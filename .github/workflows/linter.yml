@@ -25,14 +25,13 @@ jobs:
               - '.github/workflow/*'
     outputs:
       json: ${{ steps.changes.outputs.json }}
-      markdown: steps.changes.outputs.markdown
-      renovate-config: steps.changes.outputs.renovate-config
-      workflow: steps.changes.outputs.workflow
+      markdown: ${{ steps.changes.outputs.markdown }}
+      renovate-config: ${{ steps.changes.outputs.renovate-config }}
+      workflow: ${{ steps.changes.outputs.workflow }}
   
   linter:
     runs-on: ubuntu-latest
-    needs:
-      - find-changes
+    needs: find-changes
     steps:
       - uses: actions/checkout@v2
 
@@ -58,8 +57,7 @@ jobs:
   action-linter:
     runs-on: ubuntu-latest
     if: needs.find-changes.outputs.workflow == 'true'
-    needs:
-      - find-changes
+    needs: find-changes
     steps:
       - name: Install action-validator with asdf
         uses: asdf-vm/actions/install@v1
