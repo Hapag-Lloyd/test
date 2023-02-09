@@ -1,3 +1,4 @@
 {
   "extends": ["github>Hapag-Lloyd/test"],
+  "a": "b"
 }
