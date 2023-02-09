@@ -28,44 +28,52 @@ jobs:
       markdown: ${{ steps.changes.outputs.markdown }}
       renovate-config: ${{ steps.changes.outputs.renovate-config }}
       workflow: ${{ steps.changes.outputs.workflow }}
-  
-  linter:
+
+  lint-renovate:
     runs-on: ubuntu-latest
+    if: needs.find-changes.outputs.renovate-config == 'true'
     needs: find-changes
     steps:
       - uses: actions/checkout@v2
 
       - uses: suzuki-shunsuke/github-action-renovate-config-validator@v0.1.2
-        if: needs.find-changes.outputs.renovate-config == 'true'
-
+        
       # validates the default configuration included by all projects
       - uses: suzuki-shunsuke/github-action-renovate-config-validator@v0.1.2
-        if: needs.find-changes.outputs.renovate-config == 'true'
         with:
           config_file_path: default.json
 
+  lint-markdown:
+    runs-on: ubuntu-latest
+    if: needs.find-changes.outputs.markdown == 'true'
+    needs: find-changes
+    steps:
+      - uses: actions/checkout@v2
+
       - name: Validate Markdown file
-        if: needs.find-changes.outputs.markdown == 'true'
         run: |
           npm install -g markdownlint-cli
           markdownlint -c .config/markdownlint.yml -i CHANGELOG.md "**/*.md"
 
-      - name: Run JSON Lint
-        if: needs.find-changes.outputs.json == 'true'
-        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/json-lint/master/pipeline.sh)
-
-  action-linter:
+  lint-json:
     runs-on: ubuntu-latest
-    if: needs.find-changes.outputs.workflow == 'true'
+    if: needs.find-changes.outputs.json == 'true'
     needs: find-changes
     steps:
-      - name: Install action-validator with asdf
-        uses: asdf-vm/actions/install@v1
-        with:
-          tool_versions: |
-            action-validator 0.1.2
+      - uses: actions/checkout@v2
 
-      - name: Lint Actions
+      - name: Run JSON Lint
+        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/json-lint/master/pipeline.sh)
+
+  lint-workflow:
+    runs-on: ubuntu-latest
+    if: needs.find-changes.outputs.workflow == 'true'
+    container:
+      image: rhysd/actionlint:1.6.22
+      options: --cpus 1 --user root
+    steps:
+      - uses: actions/checkout@v3
+      - name: Validate Github workflows
         run: |
-          find .github/workflows -type f \( -iname \*.yaml -o -iname \*.yml \) |\
-             xargs -I {} action-validator --verbose {}
+          mkdir .git
+          actionlint -color
