@@ -37,17 +37,15 @@ jobs:
 
       - name: Install action-validator with asdf
         if: steps.changes.outputs.workflow == 'true'
-        steps:
-          - uses: asdf-vm/actions/install@v1
-            name: Install action validator
-            with:
-              tool_versions: |
-                action-validator 0.1.2
+        uses: asdf-vm/actions/install@v1
+          with:
+            tool_versions: |
+              action-validator 0.1.2
 
-          - name: Lint Actions
-            run: |
-              find .github/workflows -type f \( -iname \*.yaml -o -iname \*.yml \) |\
-                xargs -I {} action-validator --verbose {}
+      - name: Lint Actions
+        run: |
+          find .github/workflows -type f \( -iname \*.yaml -o -iname \*.yml \) |\
+            xargs -I {} action-validator --verbose {}
           
       - name: Validate Markdown file
         if: steps.changes.outputs.markdown == 'true'
