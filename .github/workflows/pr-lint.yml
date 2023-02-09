@@ -30,7 +30,6 @@ jobs:
             refactor
             revert
             style
-            test
           # Configure which scopes are allowed.
           scopes: |
             deps
