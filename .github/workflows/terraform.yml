@@ -5,6 +5,10 @@ name: Terraform
 on:
   pull_request:
 
+permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -42,6 +46,13 @@ jobs:
           path: ~/.tflint.d/plugins
           key: tflint-${{ hashFiles('.config/tflint.hcl') }}
 
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::036836550486:role/github-tflint
+          role-session-name: tflint
+          aws-region: eu-central-1
+          
       - name: Show version
         run: tflint --config=.config/tflint.hcl --version
 
