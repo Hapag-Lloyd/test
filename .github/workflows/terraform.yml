@@ -47,7 +47,7 @@ jobs:
           key: tflint-${{ hashFiles('.config/tflint.hcl') }}
 
       - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
           role-to-assume: arn:aws:iam::036836550486:role/github-tflint
           role-session-name: tflint
