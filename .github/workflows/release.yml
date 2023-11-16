@@ -12,6 +12,6 @@ jobs:
       - name: Release
         uses: google-github-actions/release-please-action@5c07f8be172b1f6e90f9c35baf8184461b91b85f # v3.7.1
         with:
-          release-type: terraform-module
+          release-type: python
           include-v-in-tag: false
           signoff: "Matthias Kay <matthias.kay@hlag.com>"
