@@ -127,7 +127,7 @@ if __name__ == "__main__":
                 "python-telegram-bot==13.15",
             ],
             "XMPP": [
-                "slixmpp==1.7.1",
+                "slixmpp==1.8.4",
                 "pyasn1==0.5.0",
                 "pyasn1-modules==0.3.0",
             ],
