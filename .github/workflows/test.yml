@@ -1,18 +1,25 @@
 ---
-name: XXX
+name: Test create PR
 
-on: # yamllint disable-line rule:truthy
+on:
   push:
 
 jobs:
-  xxx:
+  add-welcome-message:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/create-github-app-token@e995b4e40ace2eb5bf13137d9abe242c98f3aab6 # v1
-        id: app-token
-        with:
-          app-id: ${{ vars.GET_TOKEN_APP_ID }}
-          private-key: ${{ secrets.GET_TOKEN_APP_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+
+      - run: |
+          git checkout -b kayma/update-ami-version
+          git push --set-upstream origin kayma/update-ami-version
+          
+          sed -i '1s/^/search for the new AMI id manually\n /' main.tf
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        env:
+          title: "fix: update AMI to newest version"
+          draft: true
