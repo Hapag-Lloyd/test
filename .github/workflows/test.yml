@@ -13,6 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@010d0da01d0b5a38af31e9c3470dbfdabdecca3a # v4.0.1
+        with:
+          role-to-assume: ${{ secrets.TFLINT_ROLE_ARN }}
+          role-session-name: tflint
+          aws-region: ${{ secrets.TFLINT_AWS_REGION }}
+
       - run: |
           git checkout -b kayma/update-ami-version
           git push --set-upstream origin kayma/update-ami-version
