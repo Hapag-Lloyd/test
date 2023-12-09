@@ -33,7 +33,7 @@ deps = [
     "requests==2.31.0",
     "jinja2==3.1.2",
     "pyOpenSSL==23.3.0",
-    "colorlog==6.7.0",
+    "colorlog==6.8.0",
     "markdown==3.5.1",
     "ansi==0.3.6",
     "Pygments==2.17.2",
