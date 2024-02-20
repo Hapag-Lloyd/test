@@ -8,10 +8,20 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - name: Release
-        uses: google-github-actions/release-please-action@5c07f8be172b1f6e90f9c35baf8184461b91b85f # v3.7.1
+      - uses: actions/create-github-app-token@2986852ad836768dfea7781f31828eb3e17990fa # v1
+        id: app-token
         with:
-          release-type: terraform-module
+          app-id: ${{ vars.GET_TOKEN_APP_ID }}
+          private-key: ${{ secrets.GET_TOKEN_APP_PRIVATE_KEY }}
+      # bootstrap-sha and release-as needs to be removed after first release
+      - name: Release
+        uses: google-github-actions/release-please-action@a2d8d683f209466ee8c695cd994ae2cf08b1642d # ratchet:google-github-actions/release-please-action@v3
+        with:
+          release-type: python
+          token: ${{ steps.app-token.outputs.token }}
           include-v-in-tag: false
-          signoff: "Matthias Kay <matthias.kay@hlag.com>"
+          pull-request-header: ''
