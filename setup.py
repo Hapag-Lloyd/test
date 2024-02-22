@@ -28,18 +28,18 @@ VERSION_FILE = os.path.join("errbot", "version.py")
 
 deps = [
     "webtest==3.0.0",
-    "setuptools==69.0.2",
-    "flask==3.0.0",
+    "setuptools==69.1.0",
+    "flask==3.0.2",
     "requests==2.31.0",
     "jinja2==3.1.3",
-    "pyOpenSSL==23.3.0",
-    "colorlog==6.8.0",
-    "markdown==3.5.1",
-    "ansi==0.3.6",
+    "pyOpenSSL==24.0.0",
+    "colorlog==6.8.2",
+    "markdown==3.5.2",
+    "ansi==0.3.7",
     "Pygments==2.17.2",
     "pygments-markdown-lexer==0.1.0.dev39",  # sytax coloring to debug md
     "dulwich==0.21.7",  # python implementation of git
-    "deepmerge==1.1.0",
+    "deepmerge==1.1.1",
 ]
 
 if py_version < (3, 9):
@@ -124,10 +124,10 @@ if __name__ == "__main__":
                 "irc==20.3.0",
             ],
             "telegram": [
-                "python-telegram-bot==20.7",
+                "python-telegram-bot==20.8",
             ],
             "XMPP": [
-                "slixmpp==1.8.4",
+                "slixmpp==1.8.5",
                 "pyasn1==0.5.1",
                 "pyasn1-modules==0.3.0",
             ],
