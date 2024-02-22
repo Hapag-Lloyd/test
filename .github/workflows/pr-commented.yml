@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Slash Command Dispatch
-        uses: peter-evans/slash-command-dispatch@a28ee6cd74d5200f99e247ebc7b365c03ae0ef3c # v3
+        uses: peter-evans/slash-command-dispatch@f996d7b7aae9059759ac55e978cff76d91853301 # v3
         with:
           # might need a PAT with public_repo scope
           token: ${{ secrets.GITHUB_TOKEN }}
