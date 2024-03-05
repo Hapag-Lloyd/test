@@ -43,7 +43,7 @@ deps = [
 ]
 
 if py_version < (3, 9):
-    deps.append("graphlib-backport==1.0.3")
+    deps.append("graphlib-backport==1.1.0")
 
 src_root = os.curdir
 
