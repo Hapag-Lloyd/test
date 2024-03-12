@@ -84,7 +84,7 @@ jobs:
           actionlint -color
 
   lint-docker:
-    runs-on: ubuntu-lastest
+    runs-on: ubuntu-latest
     continue-on-error: true
     needs: find-changes
     if: ${{ needs.find-changes.outputs.dockerfile_files != '[]' && needs.find-changes.outputs.dockerfile_files != '' }}
