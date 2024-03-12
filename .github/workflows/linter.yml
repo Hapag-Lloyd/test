@@ -87,10 +87,10 @@ jobs:
     runs-on: ubuntu-lastest
     continue-on-error: true
     needs: find-changes
-    if: needs.find-changes.outputs.dockerfile == 'true'
+    if: ${{ needs.find-changes.outputs.dockerfile != '[]' && needs.find-changes.outputs.dockerfile != '' }}
     strategy:
       matrix:
-        file: ${{ fromJSON(needs.find-changes.outputs.dockerfile) }}
+        file: ${{ fromJson(needs.find-changes.outputs.dockerfile) }}
     steps:
       - uses: actions/checkout@v4
       - name: Lint Dockerfile
