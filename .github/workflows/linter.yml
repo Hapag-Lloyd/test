@@ -10,7 +10,7 @@ jobs:
       - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
         id: changes
         with:
-          list-files: json
+          list-files: 'json'
           filters: |
             json:
               - '**/*.json'
@@ -87,10 +87,10 @@ jobs:
     runs-on: ubuntu-lastest
     continue-on-error: true
     needs: find-changes
-    if: needs.find-changes.outputs.dockerfile == 'true'
+    if: needs.changes.outputs.dockerfile == 'true'
     strategy:
       matrix:
-        file: ${{fromJSON(needs.find-changes.outputs.dockerfile_files)}}
+        file: ${{ fromJSON(steps.changes.outputs.dockerfile) }}
     steps:
       - uses: actions/checkout@v4
       - name: Lint Dockerfile
