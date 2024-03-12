@@ -23,11 +23,15 @@ jobs:
 
             workflow:
               - '.github/workflow/*'
+            
+            dockerfile:
+              - '**/*Dockerfile*'
     outputs:
       json: ${{ steps.changes.outputs.json }}
       markdown: ${{ steps.changes.outputs.markdown }}
       renovate-config: ${{ steps.changes.outputs.renovate-config }}
       workflow: ${{ steps.changes.outputs.workflow }}
+      dockerfile: ${{ steps.changes.outputs.dockerfile }}
 
   lint-renovate:
     runs-on: ubuntu-latest
@@ -37,7 +41,7 @@ jobs:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - uses: suzuki-shunsuke/github-action-renovate-config-validator@b54483862375f51910a60c4f498e927d4f3df466 # v1.0.1
-        
+
       # validates the default configuration included by all projects
       - uses: suzuki-shunsuke/github-action-renovate-config-validator@b54483862375f51910a60c4f498e927d4f3df466 # v1.0.1
         with:
@@ -77,3 +81,35 @@ jobs:
         run: |
           mkdir .git
           actionlint -color
+
+  lint-docker:
+    runs-on: ubuntu-lastest
+    continue-on-error: true
+    needs: find-changes
+    if: needs.find-changes.outputs.dockerfile == 'true'
+    strategy:
+      matrix:
+        file: ${{fromJSON(needs.find-changes.outputs.dockerfile_files)}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: ${{ matrix.file }}
+      - uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const output = `
+            #### Hadolint for \`${{ matrix.file }}\`: \`${{ steps.hadolint.outcome }}\`
+            \`\`\`
+            ${process.env.HADOLINT_RESULTS}
+            \`\`\`
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
