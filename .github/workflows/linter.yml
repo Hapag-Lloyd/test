@@ -87,7 +87,7 @@ jobs:
     runs-on: ubuntu-lastest
     continue-on-error: true
     needs: find-changes
-    if: ${{ needs.find-changes.outputs.dockerfile != '[]' && needs.find-changes.outputs.dockerfile != '' }}
+    if: ${{ needs.find-changes.outputs.dockerfile_files != '[]' && needs.find-changes.outputs.dockerfile_files != '' }}
     strategy:
       matrix:
         file: ${{ fromJson(needs.find-changes.outputs.dockerfile_files) }}
