@@ -11,11 +11,5 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v0.1.2
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v0.1.2
-        with:
-          config_file_path: default.json
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@v0.1.2
-        with:
-          config_file_path: default1.json
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - uses: suzuki-shunsuke/github-action-renovate-config-validator@b54483862375f51910a60c4f498e927d4f3df466 # v1.0.1

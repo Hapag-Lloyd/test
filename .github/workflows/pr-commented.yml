@@ -4,12 +4,16 @@ on:
     types:
       - created
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   slashCommandDispatch:
     runs-on: ubuntu-latest
     steps:
       - name: Slash Command Dispatch
-        uses: peter-evans/slash-command-dispatch@v3
+        uses: peter-evans/slash-command-dispatch@13bc09769d122a64f75aa5037256f6f2d78be8c4 # v4
         with:
           # might need a PAT with public_repo scope
           token: ${{ secrets.GITHUB_TOKEN }}

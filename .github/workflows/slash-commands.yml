@@ -21,10 +21,11 @@ jobs:
           echo "maintainer=$maintainer" >> $GITHUB_OUTPUT
 
       - name: Create comment
-        uses: peter-evans/create-or-update-comment@v2
+        uses: peter-evans/create-or-update-comment@71345be0265236311c031f5c7866368bd1eff043 # v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
           issue-number: ${{ github.event.client_payload.github.payload.issue.number }}
-          body: |
-            Hey there @${{ steps.vars.outputs.maintainer }}, could you please help @${{ github.event.client_payload.github.payload.comment.user.login }} out?
+          body: >
+            Hey there @${{ steps.vars.outputs.maintainer }}, could you please
+            help @${{ github.event.client_payload.github.payload.comment.user.login }} out?
