@@ -10,4 +10,4 @@ jobs:
   job2:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello, World 2!"
+      - run: echo "x - ${{ secrets.TFLINT_AWS_REGION }} - x"
