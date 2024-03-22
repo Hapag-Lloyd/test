@@ -1,0 +1,13 @@
+on:
+  workflow_call:
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello, World 1!"
+
+  job2:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello, World 2!"

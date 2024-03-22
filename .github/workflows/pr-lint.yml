@@ -10,6 +10,9 @@ on:
       - 'release-please--branches--*'
 
 jobs:
+  test-call:
+    uses: ./.github/workflows/reusable.yml
+
   main:
     name: Validate PR title
     runs-on: ubuntu-latest
