@@ -13,4 +13,4 @@ jobs:
   job2:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "x - ${{ secrets.TFLINT_AWS_REGION }} - x"
+      - run: echo "x - ${{ vars.GET_TOKEN_APP_ID }} - x"
