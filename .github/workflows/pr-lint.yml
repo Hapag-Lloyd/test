@@ -14,7 +14,8 @@ permissions: read-all
 jobs:
   test-call:
     uses: ./.github/workflows/reusable.yml
-
+    secrets: inherit
+    
   main:
     name: Validate PR title
     runs-on: ubuntu-latest
