@@ -1,0 +1,13 @@
+name: Call Docker reusable workflow
+
+on:
+  push:
+
+jobs:
+  docker:
+    uses: '.github/workflows/docker-callable.yml'
+    secrets: inherit
+    with:
+      image-name: 'test'
+      push: false
+
