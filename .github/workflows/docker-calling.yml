@@ -5,7 +5,7 @@ on:
 
 jobs:
   docker:
-    uses: '.github/workflows/docker-callable.yml'
+    uses: ./.github/workflows/docker-callable.yml
     secrets: inherit
     with:
       image-name: 'test'
