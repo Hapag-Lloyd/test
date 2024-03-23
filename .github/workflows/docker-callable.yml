@@ -24,6 +24,11 @@ on:
 permissions:
   id-token: write
   contents: read
+  packages: write
+
+env:
+  ORG_NAME: hlag
+  REGISTRY: ghcr.iod
 
 jobs:
   docker-build-push:
@@ -35,7 +40,7 @@ jobs:
       - name: Configure Tags
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/hlag/${{ inputs.image-name }}
+          images: ${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}
           tags: |
             type=ref,event=pr
             type=edge,enable={{is_default_branch}}
@@ -50,7 +55,7 @@ jobs:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Image
@@ -58,13 +63,13 @@ jobs:
         with:
           context: .
           load: true
-          tags: ghcr.io/hlag/${{ inputs.image-name }}:temp
-          cache-from: type=registry,ref=ghcr.io/hlag/${{ inputs.image-name }}:buildcache
-          cache-to: type=registry,ref=ghcr.io/hlag/${{ inputs.image-name }}:buildcache,mode=max
+          tags: ${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:temp
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache,mode=max
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.18.0
         with:
-          image-ref: ghcr.io/hlag/${{ inputs.image-name }}:temp
+          image-ref: ${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:temp
           format: "table"
           exit-code: "1"
           ignore-unfixed: true
@@ -77,5 +82,5 @@ jobs:
           push: ${{ inputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/hlag/${{ inputs.image-name }}:buildcache
-          cache-to: type=registry,ref=ghcr.io/hlag/${{ inputs.image-name }}:buildcache,mode=max
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache,mode=max
