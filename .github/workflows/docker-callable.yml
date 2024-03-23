@@ -22,7 +22,6 @@ on:
 #      - "main"
 
 env:
-  ORG_NAME: hlag
   REGISTRY: ghcr.io
 
 jobs:
@@ -35,7 +34,7 @@ jobs:
         uses: docker/metadata-action@v5
         id: meta
         with:
-          images: ${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ inputs.image-name }}
           tags: |
             type=ref,event=pr
             type=edge,enable={{is_default_branch}}
@@ -51,20 +50,20 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ github.token }}
       - name: Build Image
         uses: docker/build-push-action@v5
         with:
           context: .
           load: true
-          tags: ${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:temp
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache,mode=max
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ inputs.image-name }}:temp
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ inputs.image-name }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ inputs.image-name }}:buildcache,mode=max
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.18.0
         with:
-          image-ref: ${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:temp
+          image-ref: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ inputs.image-name }}:temp
           format: "table"
           exit-code: "1"
           ignore-unfixed: true
@@ -77,5 +76,5 @@ jobs:
           push: ${{ inputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache,mode=max
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ inputs.image-name }}:buildcache
+          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ inputs.image-name }}:buildcache,mode=max
