@@ -7,8 +7,9 @@ jobs:
   docker:
     uses: ./.github/workflows/docker-callable.yml
     permissions:
-      packages: write
       contents: read
+      packages: write
+      security-events: write
     with:
       image-name: test
       push: true
