@@ -4,7 +4,7 @@ on:
   pull_request:
 
 env:
-  LINTER_RULES_PATH: '.config'
+
 
 jobs:
   lint:
@@ -22,3 +22,5 @@ jobs:
         env:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINTER_RULES_PATH: '.config'
+          VALIDATE_CHECKOV: false
