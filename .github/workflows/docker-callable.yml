@@ -64,8 +64,6 @@ jobs:
           context: .
           load: true
           tags: ${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:temp
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache,mode=max
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.18.0
         with:
@@ -82,5 +80,3 @@ jobs:
           push: ${{ inputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache
-          cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ env.ORG_NAME }}/${{ inputs.image-name }}:buildcache,mode=max
