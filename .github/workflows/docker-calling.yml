@@ -3,6 +3,11 @@ name: Call Docker reusable workflow
 on:
   push:
 
+permissions:
+  id-token: write
+  packages: write
+  contents: read
+
 jobs:
   docker:
     uses: ./.github/workflows/docker-callable.yml
