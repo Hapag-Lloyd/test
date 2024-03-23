@@ -3,114 +3,22 @@ name: Lint files
 on:
   pull_request:
 
+env:
+  LINTER_RULES_PATH: '.config'
+
 jobs:
-  find-changes:
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
-        id: changes
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          list-files: 'json'
-          filters: |
-            json:
-              - '**/*.json'
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
 
-            markdown:
-              - '**/*.md'
-
-            renovate-config:
-              - 'renovate.json'
-              - 'default.json'
-
-            workflow:
-              - '.github/workflow/*'
-            
-            dockerfile:
-              - '**/*Dockerfile*'
-    outputs:
-      json: ${{ steps.changes.outputs.json }}
-      markdown: ${{ steps.changes.outputs.markdown }}
-      renovate-config: ${{ steps.changes.outputs.renovate-config }}
-      workflow: ${{ steps.changes.outputs.workflow }}
-      dockerfile: ${{ steps.changes.outputs.dockerfile }}
-
-  lint-renovate:
-    runs-on: ubuntu-latest
-    if: needs.find-changes.outputs.renovate-config == 'true'
-    needs: find-changes
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@b54483862375f51910a60c4f498e927d4f3df466 # v1.0.1
-
-      # validates the default configuration included by all projects
-      - uses: suzuki-shunsuke/github-action-renovate-config-validator@b54483862375f51910a60c4f498e927d4f3df466 # v1.0.1
-        with:
-          config_file_path: default.json
-
-  lint-markdown:
-    runs-on: ubuntu-latest
-    if: needs.find-changes.outputs.markdown == 'true'
-    needs: find-changes
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
-      - name: Validate Markdown file
-        run: |
-          npm install -g markdownlint-cli
-          markdownlint -c .config/markdownlint.yml -i CHANGELOG.md "**/*.md"
-
-  lint-json:
-    runs-on: ubuntu-latest
-    if: needs.find-changes.outputs.json == 'true'
-    needs: find-changes
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-
-      - name: Run JSON Lint
-        run: bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/json-lint/master/pipeline.sh)
-
-  lint-workflow:
-    runs-on: ubuntu-latest
-    if: needs.find-changes.outputs.workflow == 'true'
-    container:
-      image: rhysd/actionlint:1.6.27
-      options: --cpus 1 --user root
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - name: Validate Github workflows
-        run: |
-          mkdir .git
-          actionlint -color
-
-  lint-docker:
-    runs-on: ubuntu-lastest
-    continue-on-error: true
-    needs: find-changes
-    if: needs.find-changes.outputs.dockerfile == 'true'
-    strategy:
-      matrix:
-        file: ${{fromJSON(needs.find-changes.outputs.dockerfile_files)}}
-    steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
-      - name: Lint Dockerfile
-        uses: hadolint/hadolint-action@54c9adbab1582c2ef04b2016b760714a4bfde3cf # v3.1.0
-        with:
-          dockerfile: ${{ matrix.file }}
-      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7
-        if: github.event_name == 'pull_request'
-        with:
-          script: |
-            const output = `
-            #### Hadolint for \`${{ matrix.file }}\`: \`${{ steps.hadolint.outcome }}\`
-            \`\`\`
-            ${process.env.HADOLINT_RESULTS}
-            \`\`\`
-            `;
-
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
+      - name: Super-linter
+        uses: super-linter/super-linter@v6.3.0  # x-release-please-version
+        env:
+          # To report GitHub Actions status checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
