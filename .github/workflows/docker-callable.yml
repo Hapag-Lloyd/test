@@ -28,7 +28,7 @@ permissions:
 
 env:
   ORG_NAME: hlag
-  REGISTRY: ghcr.iod
+  REGISTRY: ghcr.io
 
 jobs:
   docker-build-push:
