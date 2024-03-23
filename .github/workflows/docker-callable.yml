@@ -26,9 +26,9 @@ jobs:
       IMAGE_NAME: ghcr.io/hapag-lloyd/${{ inputs.image-name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
       - name: Configure Tags
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5
         id: meta
         with:
           images: ${{ env.IMAGE_NAME }}
@@ -40,17 +40,17 @@ jobs:
             type=semver,pattern={{major}}
             type=sha
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # v3
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@2b51285047da1547ffb1b2203d8be4c0af6b1f20 # v3
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@e92390c5fb421da1463c202d546fed0ec5c39f20 # v3
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5
         with:
           context: .
           load: true
@@ -58,18 +58,18 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.18.0
+        uses: aquasecurity/trivy-action@062f2592684a31eb3aa050cc61e7ca1451cecd3d # 0.18.0
         with:
           image-ref: ${{ env.IMAGE_NAME }}:trivy-scan
           format: "sarif"
           output: "trivy-results.sarif"
       - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@a82bad71823183e5b120ab52d521460ecb0585fe # v2
         if: ${{ inputs.upload-security-scan-results }}
         with:
           sarif_file: "trivy-results.sarif"
       - name: Build and push image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@2cdde995de11925a030ce8070c3d77a52ffcf1c0 # v5
         with:
           context: .
           push: ${{ inputs.push }}
