@@ -12,4 +12,5 @@ jobs:
       security-events: write
     with:
       image-name: test
-      push: true
+      push: false
+      upload-security-scan-results: false
