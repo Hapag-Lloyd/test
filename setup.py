@@ -29,7 +29,7 @@ VERSION_FILE = os.path.join("errbot", "version.py")
 deps = [
     "webtest==3.0.0",
     "setuptools==69.2.0",
-    "flask==3.0.2",
+    "flask==3.0.3",
     "requests==2.31.0",
     "jinja2==3.1.3",
     "pyOpenSSL==24.1.0",
