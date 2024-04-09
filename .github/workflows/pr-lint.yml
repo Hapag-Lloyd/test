@@ -9,7 +9,8 @@ on:
     branches-ignore:
       - 'release-please--branches--*'
 
-permissions: read-all
+permissions:
+  pull-requests: write
 
 jobs:
   test-call:
