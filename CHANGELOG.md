@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/Hapag-Lloyd/test/compare/v1.0.0...v1.0.1) (2024-04-10)
+
+
+### Bug Fixes
+
+* test ([#124](https://github.com/Hapag-Lloyd/test/issues/124)) ([42f1d33](https://github.com/Hapag-Lloyd/test/commit/42f1d33a2ad87258ecff35db47560c4689959600))
+
 ## [1.0.0](https://github.com/Hapag-Lloyd/test/compare/0.1.0...v1.0.0) (2023-12-09)
 
 
