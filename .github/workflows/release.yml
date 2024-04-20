@@ -7,21 +7,23 @@ on:
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
-      - uses: actions/create-github-app-token@78e5f2ddc08efcb88fbbee6cfa3fed770ba550c3 # v1
-        id: app-token
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
         with:
-          app-id: ${{ vars.GET_TOKEN_APP_ID }}
-          private-key: ${{ secrets.GET_TOKEN_APP_PRIVATE_KEY }}
-      # bootstrap-sha and release-as needs to be removed after first release
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4
+        with:
+          node-version: "lts/*"
+
+      - name: Install dependencies
+        run: npm --prefix .release/ ci
+
       - name: Release
-        uses: google-github-actions/release-please-action@a2d8d683f209466ee8c695cd994ae2cf08b1642d # ratchet:google-github-actions/release-please-action@v3
-        with:
-          release-type: python
-          token: ${{ steps.app-token.outputs.token }}
-          include-v-in-tag: false
-          pull-request-header: ''
+        run: npx --prefix .release/ semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
