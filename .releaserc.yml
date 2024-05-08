@@ -14,7 +14,7 @@ plugins:
   - "@semantic-release/git"
   - "@semantic-release/github"
   - - "@semantic-release/exec"
-    - prepareCmd: echo "${nextRelease.version}" > version.env
+    - prepareCmd: echo "${nextRelease.version}" > version.env 
 
 verifyConditions:
   - "@semantic-release/git"
