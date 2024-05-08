@@ -14,7 +14,6 @@ plugins:
   - "@semantic-release/git"
   - "@semantic-release/github"
   - "@semantic-release/exec"
-    - publishCmd: "git checkout ${nextRelease.version} && git tag stable --force && git push --tags --force"
 
 verifyConditions:
   - "@semantic-release/git"
