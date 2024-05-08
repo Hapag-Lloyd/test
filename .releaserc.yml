@@ -13,8 +13,7 @@ plugins:
   - "@semantic-release/changelog"
   - "@semantic-release/git"
   - "@semantic-release/github"
-  - - "@semantic-release/exec"
-    - verifyConditionsCmd: "echo \"${nextRelease.version}\" > version.env"
+  - "@semantic-release/exec"
 
 verifyConditions:
   - "@semantic-release/git"
@@ -104,7 +103,7 @@ publish:
       - path: "CHANGELOG.md"
         label: "Changelog"
   - path: "@semantic-release/exec"
-    publishCmd: "echo \"${nextRelease.version}\" > version.env"
+    publishCmd: "echo \"version=${nextRelease.version}\" > version.env"
 
 success:   
     
