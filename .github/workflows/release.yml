@@ -24,6 +24,18 @@ jobs:
         run: npm --prefix .release/ ci
 
       - name: Release
-        run: npx --prefix .release/ semantic-release
+        id: release
+        run: |
+          npx --prefix .release/ semantic-release
+          echo "version=${nextRelease.version}" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
+
+      - name: Tag
+        run: |
+          version=${{steps.release.outputs.version}}
+          
+          git checkout ${nextRelease.version} 
+          git tag stable --force
+          git push --tags --force
