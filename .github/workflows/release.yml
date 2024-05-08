@@ -27,8 +27,8 @@ jobs:
         id: release
         run: |
           npx --prefix .release/ semantic-release
-          echo "version=${nextRelease.version}" >> $GITHUB_OUTPUT
-          cat $GITHUB_OUTPUT
+          cat version.env
+          cat version.env >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
 
