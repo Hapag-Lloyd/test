@@ -1,4 +1,4 @@
----
+s---
 branches:
   - main
   - release-dry-run
@@ -14,7 +14,7 @@ plugins:
   - "@semantic-release/git"
   - "@semantic-release/github"
   - - "@semantic-release/exec"
-    - publishCmd: "echo \"VERSION=${nextRelease.version}\" >> version.env"
+    - successCmd: "echo \"VERSION=${nextRelease.version}\" >> version.env"
 
 verifyConditions:
   - "@semantic-release/git"
