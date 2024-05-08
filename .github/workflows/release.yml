@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         run: |
-          echo {{ github.action_ref }}
+          echo ${{ toJson(github) }}
         
   release:
     name: Release
