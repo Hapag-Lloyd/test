@@ -6,14 +6,6 @@ on:
       - main
 
 jobs:
-  test:
-    name: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        run: |
-          echo ${{ toJson(github) }}
-        
   release:
     name: Release
     runs-on: ubuntu-latest
@@ -35,15 +27,6 @@ jobs:
         id: release
         run: |
           npx --prefix .release/ semantic-release
-          cat version.env
-          cat version.env >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
 
-      - name: Tag
-        run: |
-          version=${{steps.release.outputs.version}}
-          
-          git checkout $version
-          git tag stable --force
-          git push --tags --force
