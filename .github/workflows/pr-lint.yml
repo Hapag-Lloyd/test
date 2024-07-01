@@ -18,12 +18,12 @@ jobs:
     name: Validate PR title
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@a0de6af83968303c8c955486bf9739a57d23c7f1 # v1
+      - uses: actions/create-github-app-token@31c86eb3b33c9b601a1f60f98dcbfd1d70f379b4 # v1
         id: app-token
         with:
           app-id: ${{ vars.GET_TOKEN_APP_ID }}
           private-key: ${{ secrets.GET_TOKEN_APP_PRIVATE_KEY }}
-      - uses: amannn/action-semantic-pull-request@e9fabac35e210fea40ca5b14c0da95a099eff26f # v5
+      - uses: amannn/action-semantic-pull-request@0723387faaf9b38adef4775cd42cfd5155ed6017 # v5
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         with:
