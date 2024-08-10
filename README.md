@@ -1,6 +1,8 @@
 # test
 if you need to test something (workflows, ...)
 
+Test a release
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
