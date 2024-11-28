@@ -32,7 +32,7 @@ deps = [
     "flask==3.1.0",
     "requests==2.32.3",
     "jinja2==3.1.4",
-    "pyOpenSSL==24.2.1",
+    "pyOpenSSL==24.3.0",
     "colorlog==6.9.0",
     "markdown==3.7",
     "ansi==0.3.7",
