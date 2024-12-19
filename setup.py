@@ -39,7 +39,7 @@ deps = [
     "Pygments==2.18.0",
     "pygments-markdown-lexer==0.1.0.dev39",  # sytax coloring to debug md
     "dulwich==0.22.7",  # python implementation of git
-    "deepmerge==1.1.1",
+    "deepmerge==2.0",
 ]
 
 if py_version < (3, 9):
