@@ -71,7 +71,7 @@ jobs:
 
       - name: Run JSON Lint
         env:
-          INCLUDE_FILES: ${{ needs.find-changes-for-shell-output.outputs.json_files }}
+          INCLUDE_FILES: ${{ needs.find-changes.outputs.json_files }}
         run: |
           echo $INCLUDE_FILES
           bash <(curl -s https://raw.githubusercontent.com/CICDToolbox/json-lint/master/pipeline.sh)
